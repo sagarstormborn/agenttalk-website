@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://agenttalk.dev/cgi-bin';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://agenttalk.dev';
 
 class AnalyticsService {
   static async trackPageView(page) {
@@ -9,7 +9,7 @@ class AnalyticsService {
       formData.append('userAgent', navigator.userAgent);
       formData.append('referrer', document.referrer);
       
-      const response = await fetch(`${API_BASE_URL}/contact.cgi/pageview`, {
+      const response = await fetch(`${API_BASE_URL}/contact.php/pageview`, {
         method: 'POST',
         body: formData,
       });
@@ -30,7 +30,7 @@ class AnalyticsService {
         form.append(key, formData[key]);
       });
       
-      const response = await fetch(`${API_BASE_URL}/contact.cgi/contact`, {
+      const response = await fetch(`${API_BASE_URL}/contact.php/contact`, {
         method: 'POST',
         body: form,
       });
