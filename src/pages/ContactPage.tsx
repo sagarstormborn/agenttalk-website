@@ -59,9 +59,9 @@ const ContactPage: React.FC = () => {
       icon: EnvelopeIcon,
       title: 'Email Us',
       description: 'For general inquiries and support',
-      contact: 'hello@agenttalk.dev',
+      contact: 'codesageml@gmail.com',
       action: 'Send Email',
-      href: 'mailto:hello@agenttalk.dev',
+      href: 'mailto:codesageml@gmail.com',
       color: 'indigo'
     },
     {
@@ -239,7 +239,7 @@ const ContactPage: React.FC = () => {
                     <EnvelopeIcon className="h-5 w-5 text-gray-400" />
                     <div>
                       <div className="font-medium text-gray-900">Press Inquiries</div>
-                      <div className="text-sm text-gray-600">press@agenttalk.dev</div>
+                      <div className="text-sm text-gray-600">sdhakecha159@gmail.com</div>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">

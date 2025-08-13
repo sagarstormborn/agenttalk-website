@@ -57,10 +57,10 @@ const Footer: React.FC = () => {
               <div className="flex items-center space-x-3">
                 <EnvelopeIcon className="h-5 w-5 text-gray-400" />
                 <a 
-                  href="mailto:hello@agenttalk.io" 
+                  href="mailto:codesageml@gmail.com" 
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  hello@agenttalk.io
+                  codesageml@gmail.com
                 </a>
               </div>
               <div className="flex items-center space-x-3">
@@ -192,30 +192,7 @@ const Footer: React.FC = () => {
             © {currentYear} AgentTalk. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a 
-              href="https://twitter.com/agenttalk" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              Twitter
-            </a>
-            <a 
-              href="https://github.com/agenttalk" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              GitHub
-            </a>
-            <a 
-              href="https://linkedin.com/company/agenttalk" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              LinkedIn
-            </a>
+            {/* Social media links removed - not set up yet */}
           </div>
         </div>
       </div>

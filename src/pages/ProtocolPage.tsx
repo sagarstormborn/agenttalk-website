@@ -16,7 +16,7 @@ const ProtocolPage: React.FC = () => {
       icon: DocumentArrowDownIcon,
       format: 'YAML',
       size: '45 KB',
-      href: 'mailto:hello@agenttalk.dev?subject=AgentTalk%20Protocol%20Specification%20Request'
+      href: 'mailto:codesageml@gmail.com?subject=AgentTalk%20Protocol%20Specification%20Request'
     },
     {
       name: 'gRPC Proto Files',
@@ -24,7 +24,7 @@ const ProtocolPage: React.FC = () => {
       icon: CodeBracketIcon,
       format: '.proto',
       size: '12 KB',
-      href: 'mailto:hello@agenttalk.dev?subject=AgentTalk%20gRPC%20Proto%20Files%20Request'
+      href: 'mailto:codesageml@gmail.com?subject=AgentTalk%20gRPC%20Proto%20Files%20Request'
     },
     {
       name: 'DID Document Template',
@@ -32,7 +32,7 @@ const ProtocolPage: React.FC = () => {
       icon: ShieldCheckIcon,
       format: 'JSON',
       size: '8 KB',
-      href: 'mailto:hello@agenttalk.dev?subject=AgentTalk%20DID%20Document%20Template%20Request'
+      href: 'mailto:codesageml@gmail.com?subject=AgentTalk%20DID%20Document%20Template%20Request'
     }
   ];
 
