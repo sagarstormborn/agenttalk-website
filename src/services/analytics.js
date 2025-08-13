@@ -1,18 +1,17 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://agenttalk.dev/cgi-bin';
 
 class AnalyticsService {
   static async trackPageView(page) {
     try {
-      const response = await fetch(`${API_BASE_URL}/analytics/pageview`, {
+      // Create form data for CGI compatibility
+      const formData = new FormData();
+      formData.append('page', page);
+      formData.append('userAgent', navigator.userAgent);
+      formData.append('referrer', document.referrer);
+      
+      const response = await fetch(`${API_BASE_URL}/contact.cgi/pageview`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          page,
-          userAgent: navigator.userAgent,
-          referrer: document.referrer,
-        }),
+        body: formData,
       });
       
       if (!response.ok) {
@@ -25,12 +24,15 @@ class AnalyticsService {
 
   static async submitContactForm(formData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/contact`, {
+      // Convert JSON data to FormData for CGI compatibility
+      const form = new FormData();
+      Object.keys(formData).forEach(key => {
+        form.append(key, formData[key]);
+      });
+      
+      const response = await fetch(`${API_BASE_URL}/contact.cgi/contact`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: form,
       });
       
       const data = await response.json();
