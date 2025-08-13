@@ -178,8 +178,8 @@ This project is proprietary software. All rights reserved.
 ## 📞 Support
 
 For support and questions:
-- Email: hello@agenttalk.io
-- Documentation: [docs.agenttalk.io](https://docs.agenttalk.io)
+- Email: codesageml@gmail.com
+- Press Inquiries: sdhakecha159@gmail.com
 - GitHub Issues: For bug reports and feature requests
 
 ---
