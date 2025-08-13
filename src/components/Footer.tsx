@@ -170,10 +170,13 @@ const Footer: React.FC = () => {
             <p className="text-gray-300 text-sm mb-4">
               Get the latest updates on AgentTalk protocol, new features, and pilot opportunities.
             </p>
-            <form className="flex space-x-2">
+            <form className="flex space-x-2" onSubmit={(e) => e.preventDefault()}>
               <input
+                id="newsletter-email"
                 type="email"
+                name="newsletter-email"
                 placeholder="Enter your email"
+                autoComplete="email"
                 className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
               <button

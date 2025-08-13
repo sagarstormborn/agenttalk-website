@@ -117,52 +117,25 @@ const ContactPage: React.FC = () => {
     setSubmitError(null);
 
     try {
-      const accessKey = process.env.REACT_APP_WEB3FORMS_KEY;
-      if (!accessKey) {
-        throw new Error('Missing Web3Forms access key. Set REACT_APP_WEB3FORMS_KEY in your environment.');
-      }
-
-      const payload = {
-        access_key: accessKey,
-        subject: 'New AgentTalk contact request',
-        from_name: formData.name,
-        from_email: formData.email,
-        page: window.location.href,
-        message: formData.message || '—',
-        company: formData.company || '—',
-        role: formData.role || '—',
-        use_case: formData.useCase || '—',
-        monthly_calls: formData.monthlyCalls || '—',
-        consent: formData.consent ? 'yes' : 'no',
-        replyto: formData.email,
-      } as const;
-
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+      // Use our custom backend instead of Web3Forms
+      const result = await AnalyticsService.submitContactForm({
+        name: formData.name,
+        email: formData.email,
+        company: formData.company,
+        role: formData.role,
+        useCase: formData.useCase,
+        monthlyCalls: formData.monthlyCalls,
+        message: formData.message,
+        consent: formData.consent ? 'yes' : 'no'
       });
 
-      const data = await res.json();
-      if (data.success) {
-        // Also send to our analytics backend for Telegram notifications
-        try {
-          await AnalyticsService.submitContactForm({
-            name: formData.name,
-            email: formData.email,
-            company: formData.company,
-            message: `Role: ${formData.role}\nUse Case: ${formData.useCase}\nMonthly Calls: ${formData.monthlyCalls}\n\nMessage: ${formData.message}`
-          });
-        } catch (error) {
-          console.error('Failed to send to analytics backend:', error);
-        }
-        
+      if (result.success) {
         setIsSubmitted(true);
         setFormData({
           name: '', email: '', company: '', role: '', useCase: '', monthlyCalls: '', message: '', consent: false,
         });
       } else {
-        throw new Error(data.message || 'Submission failed');
+        throw new Error(result.error || 'Submission failed');
       }
     } catch (err: any) {
       setSubmitError(err.message || 'Something went wrong. Please try again.');
@@ -290,17 +263,19 @@ const ContactPage: React.FC = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                         Full Name *
                       </label>
                       <div className="relative">
                         <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                         <input
+                          id="name"
                           type="text"
                           name="name"
                           value={formData.name}
                           onChange={handleInputChange}
                           required
+                          autoComplete="name"
                           className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                           placeholder="Your full name"
                         />
@@ -308,17 +283,19 @@ const ContactPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                         Email Address *
                       </label>
                       <div className="relative">
                         <EnvelopeIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                         <input
+                          id="email"
                           type="email"
                           name="email"
                           value={formData.email}
                           onChange={handleInputChange}
                           required
+                          autoComplete="email"
                           className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                           placeholder="your.email@company.com"
                         />
@@ -326,16 +303,18 @@ const ContactPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
                         Company
                       </label>
                       <div className="relative">
                         <BuildingOfficeIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                         <input
+                          id="company"
                           type="text"
                           name="company"
                           value={formData.company}
                           onChange={handleInputChange}
+                          autoComplete="organization"
                           className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                           placeholder="Your company"
                         />
@@ -343,13 +322,15 @@ const ContactPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-2">
                         Role
                       </label>
                       <select
+                        id="role"
                         name="role"
                         value={formData.role}
                         onChange={handleInputChange}
+                        autoComplete="organization-title"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                       >
                         <option value="">Select your role</option>
@@ -362,13 +343,15 @@ const ContactPage: React.FC = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="useCase" className="block text-sm font-medium text-gray-700 mb-2">
                         Primary Use Case
                       </label>
                       <select
+                        id="useCase"
                         name="useCase"
                         value={formData.useCase}
                         onChange={handleInputChange}
+                        autoComplete="off"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                       >
                         <option value="">Select use case</option>
@@ -379,14 +362,16 @@ const ContactPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="monthlyCalls" className="block text-sm font-medium text-gray-700 mb-2">
                         Monthly API Calls (Estimate)
                       </label>
                       <input
+                        id="monthlyCalls"
                         type="text"
                         name="monthlyCalls"
                         value={formData.monthlyCalls}
                         onChange={handleInputChange}
+                        autoComplete="off"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                         placeholder="e.g., 10K, 100K, 1M+"
                       />
@@ -394,14 +379,16 @@ const ContactPage: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
                       Message
                     </label>
                     <textarea
+                      id="message"
                       name="message"
                       value={formData.message}
                       onChange={handleInputChange}
                       rows={4}
+                      autoComplete="off"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                       placeholder="Tell us about your project, timeline, or any specific requirements..."
                     />
@@ -409,6 +396,7 @@ const ContactPage: React.FC = () => {
 
                   <div className="flex items-start space-x-3">
                     <input
+                      id="consent"
                       type="checkbox"
                       name="consent"
                       checked={formData.consent}
@@ -416,7 +404,7 @@ const ContactPage: React.FC = () => {
                       required
                       className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                     />
-                    <label className="text-sm text-gray-600">
+                    <label htmlFor="consent" className="text-sm text-gray-600">
                       I agree to receive communications from AgentTalk about product updates and pilot opportunities. 
                       You can unsubscribe at any time.
                     </label>

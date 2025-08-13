@@ -30,7 +30,7 @@ const AnalyticsDashboard: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('https://agenttalk.dev/cgi-bin/contact.cgi/analytics', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3001/api'}/analytics/dashboard`, {
         headers: {
           'X-API-Key': apiKey,
         },

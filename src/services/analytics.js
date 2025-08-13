@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://agenttalk.dev';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
 class AnalyticsService {
   static async trackPageView(page) {
@@ -9,9 +9,10 @@ class AnalyticsService {
       formData.append('userAgent', navigator.userAgent);
       formData.append('referrer', document.referrer);
       
-      const response = await fetch(`${API_BASE_URL}/contact.php/pageview`, {
+      const response = await fetch(`${API_BASE_URL}/analytics/pageview`, {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ page, userAgent: navigator.userAgent, referrer: document.referrer }),
       });
       
       if (!response.ok) {
@@ -24,15 +25,10 @@ class AnalyticsService {
 
   static async submitContactForm(formData) {
     try {
-      // Convert JSON data to FormData for CGI compatibility
-      const form = new FormData();
-      Object.keys(formData).forEach(key => {
-        form.append(key, formData[key]);
-      });
-      
-      const response = await fetch(`${API_BASE_URL}/contact.php/contact`, {
+      const response = await fetch(`${API_BASE_URL}/contact`, {
         method: 'POST',
-        body: form,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
       
       const data = await response.json();
